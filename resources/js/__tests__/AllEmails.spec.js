@@ -13,6 +13,8 @@ const router = new VueRouter({
     routes,
     mode: 'history'
 });
+
+global.localStorage.setItem('user', JSON.stringify({ access_token: 'abc123', company: { api_key: 'abc123' } }));
 const localVue = createLocalVue()
 localVue.use(VueRouter);
 initialize(router);
@@ -31,6 +33,7 @@ const data = {
         data: {
             data: [
                 {
+                    id: 1,
                     sender: {
                         name: 'John', email: 'john@gmail.com'
                     },
@@ -44,6 +47,7 @@ const data = {
                     status: 'sent'
                 },
                 {
+                    id: 2,
                     sender: {
                         name: 'Ben', email: 'ben@gmail.com'
                     },
@@ -79,12 +83,12 @@ const disinctData = {
 
 
 describe('AllEmails.vue', () => {
-    axios.post.mockImplementationOnce(() => Promise.resolve(data))
-    axios.get.mockImplementationOnce(() => Promise.resolve(disinctData))
+
     it('it fetches data correctly from backend when mounted', async () => {
+        axios.post.mockImplementationOnce(() => Promise.resolve(data))
+        axios.get.mockImplementationOnce(() => Promise.resolve(disinctData))
 
-        const wrapper = mount(AllEmails, { localVue });
-
+        const wrapper = mount(AllEmails, { localVue, router });
         expect(wrapper.text()).toContain('No data available');
 
         await flushPromises()
@@ -98,5 +102,22 @@ describe('AllEmails.vue', () => {
         expect(wrapper.vm.senders[0].name).toBe('ben');
 
     });
+
+    it("It vavigates top view page when an item iis viewe", async () => {
+        axios.post.mockImplementationOnce(() => Promise.resolve(data))
+        axios.get.mockImplementationOnce(() => Promise.resolve(disinctData))
+
+        const wrapper2 = mount(AllEmails, { localVue, router });
+        await flushPromises()
+        const ActionButton = wrapper2.find('#email1');
+        await ActionButton.trigger('click');
+        await flushPromises()
+        const Link = wrapper2.find('#email1link');
+        await Link.trigger('click');
+        expect(wrapper2.vm.$route.name).toBe('view-email');
+
+        global.localStorage.removeItem('user');
+
+    })
 
 });

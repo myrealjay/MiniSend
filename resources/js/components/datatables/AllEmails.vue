@@ -110,6 +110,7 @@
                   aria-labelledby="dropdownMenuButton"
                 >
                   <router-link
+                    :id="`email${email.id}link`"
                     :to="{
                       name: 'view-email',
                       params: { id: email.id },

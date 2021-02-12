@@ -14,6 +14,7 @@
                     </div>
                     <div class="col-md-12">
                       <input
+                        id="sendername"
                         class="contactus"
                         placeholder="Sender Name"
                         type="text"
@@ -23,6 +24,7 @@
                     </div>
                     <div class="col-md-12">
                       <input
+                        id="senderemail"
                         class="contactus"
                         placeholder="Sender Email"
                         type="email"
@@ -33,6 +35,7 @@
 
                     <div class="col-md-12">
                       <input
+                        id="receivername"
                         class="contactus"
                         placeholder="Receiver Name"
                         type="text"
@@ -42,6 +45,7 @@
                     </div>
                     <div class="col-md-12">
                       <input
+                        id="receiveremail"
                         class="contactus"
                         placeholder="Receiver Email"
                         type="email"
@@ -52,6 +56,7 @@
 
                     <div class="col-md-12">
                       <input
+                        id="subject"
                         class="contactus"
                         placeholder="Subject"
                         type="text"
@@ -62,6 +67,7 @@
 
                     <div class="col-md-12">
                       <textarea
+                        id="text_content"
                         class="textarea"
                         placeholder="Text Contnent"
                         type="text"
@@ -73,6 +79,7 @@
 
                     <div class="col-md-12">
                       <tinymce
+                        id="html_content"
                         class="form-control"
                         v-model="user.html_content"
                       ></tinymce>
@@ -87,13 +94,19 @@
                     </div>
 
                     <div class="col-md-12">
-                      <input type="file" multiple @change="fileSelected" />
+                      <input
+                        id="file"
+                        type="file"
+                        multiple
+                        @change="fileSelected"
+                      />
                     </div>
 
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <p style="color: red">{{ error }}</p>
                       <p style="color: green" v-html="success"></p>
                       <button
+                        id="send"
                         class="send"
                         @click.prevent="send()"
                         v-html="sending ? 'Wait ..' : 'Send'"
@@ -111,6 +124,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import tinymce from "./tinymice";
 export default {
   components: { tinymce },
